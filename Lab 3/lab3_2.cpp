@@ -1,6 +1,7 @@
 /*
 Question 2-
-Compute the approximate order of convergence of the fixed point iteration in finding the fixed point of the function cos(x) in [0 ,π/2]. */ 
+Compute the approximate order of convergence of the fixed point iteration in finding the fixed point
+of the function cos(x) in [0 ,π/2]. */
 
 #include <iostream>
 #include <cmath>
@@ -40,6 +41,10 @@ void fixed_point_method (double p0, int iteration_num, vector<double> &alpha)
             iteration_num++;
         }
     }
+		for (size_t i = 1; i < calc_root.size(); i++) {
+			std::cout << error(calc_root[i], calc_root[i-1]) << '\n';
+		}
+		std::cout << "Alpha Values" << '\n';
     for(int i=3; i<calc_root.size(); i++)
     {
         double alpha_value = log(error(calc_root[i-1], calc_root[i-2])/error(calc_root[i], calc_root[i-1]))/log(error(calc_root[i-2], calc_root[i-3])/error(calc_root[i-1], calc_root[i-2]));

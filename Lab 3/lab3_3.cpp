@@ -1,7 +1,7 @@
 /*
-Question 2-
-Let f(x) = (x-1)*(x-6)*(x-8), compare the approximate order of convergence of both secant and Newton’s method in finding 
-the root of f in the interval [0, 2] */ 
+Question 3-
+Let f(x) = (x-1)*(x-6)*(x-8), compare the approximate order of convergence of both secant and Newton’s method
+in finding the root of f in the interval [0, 2] */
 
 #include <iostream>
 #include <cmath>
@@ -57,6 +57,10 @@ void newton_method (double p0, int iteration_num, vector<double> &alpha)
             iteration_num++;
         }
     }
+		for (size_t i = 0; i < calc_root.size(); i++) {
+			std::cout << error(calc_root[i]) << '\n';
+		}
+		std::cout << "Alpha Values" << '\n';
     for(int i=2; i<calc_root.size(); i++)
     {
         double alpha_value = log(error(calc_root[i-1])/error(calc_root[i]))/log(error(calc_root[i-2])/error(calc_root[i-1]));
@@ -82,6 +86,10 @@ double secant_method (double x_n_1, double x_n_2, int iteration_num, vector<doub
 		x_n_2 = x_n_1;
 		x_n_1 = x_n;
 	}
+	for (size_t i = 0; i < calc_root.size(); i++) {
+		std::cout << error(calc_root[i]) << '\n';
+	}
+	std::cout << "Alpha Values" << '\n';
     for(int i=2; i<calc_root.size(); i++)
     {
         double alpha_value = log(error(calc_root[i-1])/error(calc_root[i]))/log(error(calc_root[i-2])/error(calc_root[i-1]));
@@ -105,6 +113,7 @@ int main()
     double x_n_1 = 0.5;
     double x_n_2 = 1.5;
 
+	std::cout << "secant_method" << '\n';
 	secant_method (x_n_1, x_n_2, iteration_num, secant_alpha);
     cout << "secant_alpha for secant's method\n";
     for(int i=0; i<secant_alpha.size(); i++)

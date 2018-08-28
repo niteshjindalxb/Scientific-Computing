@@ -1,0 +1,21 @@
+Newton Method starts
+0.673684
+0.115319
+0.00430203
+6.33126e-06
+1.37433e-11
+Alpha Values
+1.86318
+1.983
+1.99966
+secant_method
+0.0851064
+0.0131438
+0.000393548
+1.77938e-06
+2.40069e-10
+Alpha Values
+secant_alpha for secant's method
+1.87826
+1.53881
+1.65048

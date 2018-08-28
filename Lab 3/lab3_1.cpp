@@ -1,7 +1,7 @@
 /*
 Question 1-
-Let f(x) = e^x − x − 1. Compute the approximate order of convergence of both Newton’s and Modified Newton’s methods in finding 
-a zero of f in the interval [− 1 , 1]. */ 
+Let f(x) = e^x − x − 1. Compute the approximate order of convergence of both Newton’s and Modified Newton’s
+methods in finding a zero of f in the interval [− 1 , 1]. */
 
 #include <iostream>
 #include <cmath>
@@ -59,6 +59,10 @@ void newton_method (double p0, int iteration_num, vector<double> &alpha)
             iteration_num++;
         }
     }
+		for (size_t i = 0; i < calc_root.size(); i++) {
+			std::cout << calc_root[i] << '\n';
+		}
+		std::cout << "Alpha_Value" << '\n';
     for(int i=2; i<calc_root.size(); i++)
     {
         double alpha_value = log(calc_root[i-1]/calc_root[i])/log(calc_root[i-2]/calc_root[i-1]);
@@ -99,6 +103,10 @@ void modified_newton_method (double p0, int iteration_num, vector<double> &alpha
             iteration_num++;
         }
     }
+		for (size_t i = 0; i < calc_root.size(); i++) {
+			std::cout << calc_root[i] << '\n';
+		}
+		std::cout << "Alpha_Value" << '\n';
     for(int i=2; i<calc_root.size(); i++)
     {
         double alpha_value = log(calc_root[i-1]/calc_root[i])/log(calc_root[i-2]/calc_root[i-1]);
@@ -119,6 +127,7 @@ int main()
     for(int i=0; i<alpha.size(); i++)
         cout << alpha[i] << endl;
 
+	std::cout << "modified_newton_method" << '\n';
 
 	modified_newton_method (p0, iteration_num, modified_alpha);
     // cout << "modified_alpha for modified newton's method\n";
