@@ -19,7 +19,7 @@ double adaptive_simpson (double a, double b, double max_error, vector<double> &x
 {
     // Calculate S1
     double integral_S1 = simpson (a, b);
-    
+
     // Calculate S2
     double integral_S2 = simpson (a, (a+b)/2) + simpson ((a+b)/2, b);
 
@@ -35,7 +35,7 @@ double adaptive_simpson (double a, double b, double max_error, vector<double> &x
         x_points.push_back (b);
         return integral_S2;
     }
-    
+
     vector<double> left_x_points;
     vector<double> right_x_points;
 

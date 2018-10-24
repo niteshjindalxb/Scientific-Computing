@@ -1,200 +1,113 @@
+
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include <utility>
-
+#include <algorithm>
 using namespace std;
-#define print(str, val)\
-    cout << str << "\t:\t" << val << "\n";
 
-// -----------------------------------------------------------
-// double f(double t, double y)
-// {
-//     return y/t - (y*y)/(t*t);
-// }
+#define MAX_ITERATION 53
+#define print(x, y) \
+	cout << "Iteration number = " << x << " and result = " << y << endl;
 
-// double orig_sol (double t)
-// {
-//     return (double)t/((double)1.0+ (double)log(t));
-// }
-
-// double initial_value ()
-// {
-//     return 1.0;
-// }
-
-// double initial_t ()
-// {
-//     return 1.0;
-// }
-
-// double evaluate_t ()
-// {
-//     return 2.0;
-// }
-
-// double step_size ()
-// {
-//     return 0.1;
-// }
-// -----------------------------------------------------------
-// double f(double t, double y)
-// {
-//     return 1 + y/t + (y*y)/(t*t);
-// }
-
-// double orig_sol (double t)
-// {
-//     return t*tan(log(t));
-// }
-
-// double initial_value ()
-// {
-//     return 0.0;
-// }
-
-// double initial_t ()
-// {
-//     return 1.0;
-// }
-
-// double evaluate_t ()
-// {
-//     return 3.0;
-// }
-
-// double step_size ()
-// {
-//     return 0.2;
-// }
-// -----------------------------------------------------------
-// double f(double t, double y)
-// {
-//     return -(y+1)*(y+3);
-// }
-
-// double orig_sol (double t)
-// {
-//     return -3.0 + 2.0/(1+exp(-2.0*t));
-// }
-
-// double initial_value ()
-// {
-//     return -2.0;
-// }
-
-// double initial_t ()
-// {
-//     return 0.0;
-// }
-
-// double evaluate_t ()
-// {
-//     return 2.0;
-// }
-
-// double step_size ()
-// {
-//     return 0.2;
-// }
-// -----------------------------------------------------------
-double f(double t, double y)
+double f (vector<double> coef, double x)
 {
-    return -5*y + 5*t*t + 2*t;
+    double result = coef[0];
+	for (int i=0; i<coef.size(); i++)
+        result = result*x + coef[i+1];
+    return result;
 }
 
-double orig_sol (double t)
+double df (double x)
 {
-    return t*t + 1.0/3.0 * exp(-5.0*t);
+	return exp(x) - 1;
 }
 
-double initial_value ()
+vector<double> legendre_poly (int deg)
 {
-    return 1.0/3.0;
-}
-
-double initial_t ()
-{
-    return 0.0;
-}
-
-double evaluate_t ()
-{
-    return 1.0;
-}
-
-double step_size ()
-{
-    return 0.1;
-}
-// -----------------------------------------------------------
-double euler_approx (double t_0, double t_1, double h, vector<pair<double, double> > &my_pairs)
-{
-    // y(t+1) = y(t) + h*f(y, t);
-    double current_t = t_0;
-    double y_0 = initial_value();
-    double y_1;
-    while (current_t <= t_1)
+    vector<double> coef;
+    if (deg == 0)
     {
-        my_pairs.push_back (make_pair(current_t, y_0));
-        y_1 = y_0 + h*f(current_t, y_0);
-        y_0 = y_1;
-        current_t += h;
+        coef.push_back (1.0);
+        return coef;
     }
-    my_pairs.push_back (make_pair(current_t, y_0));
-    return y_1;
-}
-// -----------------------------------------------------------
-double linear_interpolation(pair<double, double> point_1, pair<double, double> point_2, double evaluate_at)
-{
-    return point_1.second + (evaluate_at - point_1.first) * (point_2.second - point_1.second) / (point_2.first - point_1.first);
+    else if (deg == 1)
+    {
+        coef.push_back (1.0);
+        coef.push_back (0.0);
+        return coef;
+    }
+    else
+    {
+        int j = deg-1;
+        vector<double> coef_j = legendre_poly (j);
+        vector<double> coef_j_1 = legendre_poly (j - 1);
+
+        for (int i = 0; i < coef_j.size(); i++)
+            coef_j[i] = ((double)(2*j + 1)/(double)(j + 1))*coef_j[i];
+        
+        coef_j.push_back (0.0);
+
+        for (int i = 0; i < coef_j_1.size(); i++)
+            coef_j_1[i] = ((double)j/(double)(j + 1))*coef_j_1[i];
+        
+        // Subtract two polynomials
+        int k = 0;
+        for (int i = 0; i < coef_j.size(); i++)
+        {
+            if (i < coef_j.size() - coef_j_1.size())
+                continue;
+            coef_j[i] = coef_j[i] - coef_j_1[k++];
+        }
+        return coef_j;
+    }
 }
 
-// -----------------------------------------------------------
+// void newton_method (double p0, int iteration_num, vector<double> &alpha)
+// {
+//     double denominator = df (p0);
+//     double p1;
+
+//     vector<double> calc_root;
+
+//     while(iteration_num < MAX_ITERATION)
+//     {
+//         denominator = df (p0);
+//         if (denominator == 0)
+//         {
+//             cout << "Slope is zero. Method stopped here\n";
+//             calc_root.push_back(p0);
+//             break;
+//         }
+//         p1 = p0 - f(p0)/(denominator);
+//         // print(iteration_num, p1);
+//         calc_root.push_back(p1);
+//         if (abs(p1 - p0) < tolerance)
+//             break;
+//         else
+//         {
+//             p0 = p1;
+//             iteration_num++;
+//         }
+//     }
+//     for(int i=2; i<calc_root.size(); i++)
+//     {
+//         double alpha_value = log(calc_root[i-1]/calc_root[i])/log(calc_root[i-2]/calc_root[i-1]);
+//         alpha.push_back (alpha_value);
+//     }
+// }
+
 int main()
 {
-    double t_0 = initial_t();
-    double t_1 = evaluate_t();
-    double h = step_size();
-    vector<pair<double, double> > my_pairs;
+    double p0 = -1;
+    int iteration_num = 1;
+	// newton_method (p0, iteration_num, alpha);
 
-    // Euler approximation at t = t_0
-    double y = euler_approx (t_0, t_1, h, my_pairs);
-    print("Approximated Soln", y);
-    double original_soln = orig_sol(evaluate_t());
-    print("Original Soln\t", original_soln);
-
-    // Now to find approximate solution at point_1, point_2 using linear interpolation
-    double point[] = {1.05, 1.93};
-
-    int count = 0;
-    while (count < 2)
+    vector<double> coef = legendre_poly (5);
+    for (int i=0; i<coef.size(); i++)
     {
-        int pos = -1;
-        // cout << "Points\n";
-        for (int i = 0; i < my_pairs.size() - 1; i++)
-        {
-            // print(my_pairs[i].first, my_pairs[i].second);
-            if (my_pairs[i+1].first > point[count])
-            {
-                pos = i;
-                break;
-            }
-        }
-        if (pos == -1)
-        {
-            cout << "Error Occurred\n";
-            return 1;
-        }
-        cout << "------------\n";
-        print (my_pairs[0].first, my_pairs[0].second);
-        print (my_pairs[pos].first, my_pairs[pos].second);
-        print (my_pairs[pos+1].first, my_pairs[pos+1].second);
-        cout << "------------\n";
-        double result = linear_interpolation (my_pairs[pos], my_pairs[pos+1], point[count]);
-        print (point[count], result);
-        print ("Real", orig_sol(point[count]));
-        count ++;
+        cout << coef[i] << " ";
     }
+    cout << endl;
+
+	return 0;
 }
-// -----------------------------------------------------------
