@@ -1,4 +1,4 @@
-all : run
+all : run clean
 
 CC = g++
 CFLAGS = -c
