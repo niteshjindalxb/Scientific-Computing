@@ -108,13 +108,13 @@ std::vector<double> calc_exact_soln ()
 
     return exact_soln;
 }
-// vector<double> calc_error (vector<double> &approx_soln, vector<double> &exact_soln)
-// {
-//     vector<double> list_error;
-//     for (int i = 0; i < exact_soln.size(); i++)
-//         list_error.push_back (error(approx_soln[i], exact_soln[i]));
-//     return list_error;
-// }
+std::vector<double> calc_error (vector<double> &approx_soln, vector<double> &exact_soln)
+{
+    vector<double> list_error;
+    for (int i = 0; i < exact_soln.size(); i++)
+        list_error.push_back (abs(approx_soln[i] - exact_soln[i]));
+    return list_error;
+}
 // -----------------------------------------------------------
 int main()
 {
@@ -143,6 +143,22 @@ int main()
     print("--------------------------------");
     print("CN_soln\tExact_soln");
     display_2_vectors(CN_soln, exact_soln);
+
+    // Calculation of error
+    std::vector<double> forward_error = calc_error (forward_soln, exact_soln);
+    std::vector<double> backward_error = calc_error (backward_soln, exact_soln);
+    std::vector<double> CN_error = calc_error (CN_soln, exact_soln);
+
+    print("Forward_error");
+    display(forward_error);
+
+    print("--------------------------------");
+    print("Backward_error");
+    display(backward_error);
+
+    print("--------------------------------");
+    print("CN_error");
+    display(CN_error);
 
     // display_5_vectors (x_points, forward_soln, backward_soln, CN_soln, exact_soln);
     return 0;
