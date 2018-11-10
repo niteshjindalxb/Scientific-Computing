@@ -19,7 +19,9 @@ double x_step_size ()
 }
 double t_step_size ()
 {
-    // return (x_step_size() * x_step_size() * STABILITY * M_PI * M_PI)/4.0;
+    // To see stable Solution in forward_diff_method
+    // return 0.04;
+    // To see Unstable Solution in forward_diff_method
     return 0.08;
 }
 double x_range_from()
@@ -36,6 +38,9 @@ double t_range_from()
 }
 double evaluate_at()
 {
+    // To see stable Solution in forward_diff_method
+    // return /* at t = */ 0.4;
+    // To see Unstable Solution in forward_diff_method
     return /* at t = */ 4.0;
 }
 double parabolic_c()
