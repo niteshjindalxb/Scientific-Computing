@@ -3,7 +3,7 @@
 /* ********************************** */
 #define print(str)\
     cout << str << "\n";
-#define epsilon 1e-6
+#define epsilon 1e-4
 #define _USE_MATH_DEFINES
 #define STABILITY 0.5
 

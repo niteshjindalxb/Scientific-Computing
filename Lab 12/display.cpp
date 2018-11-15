@@ -1,5 +1,6 @@
 #include <bits/stdc++.h>
 #include "display.h"
+using namespace std;
 
 void display (std::vector <double> &arr)
 {
