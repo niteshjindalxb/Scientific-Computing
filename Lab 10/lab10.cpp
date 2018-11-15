@@ -96,7 +96,7 @@ void fixed_point_method (vector <double> &w_values, vector <double> &fixed_alpha
     }
     // We got the fixed point i.e. p1
     w_values.push_back (p1);
-    
+
     // Now calculate alpha values
     double original_soln = orig_sol (step_size() * w_values.size());
     for(int i = 3; i < fixed_point_value.size(); i++)
@@ -107,7 +107,7 @@ void fixed_point_method (vector <double> &w_values, vector <double> &fixed_alpha
     double sum_alpha = 0.0;
     for (int i=0; i<iter_alpha.size(); i++)
         sum_alpha += iter_alpha[i];
-    
+
     fixed_alpha.push_back (sum_alpha/iter_alpha.size());
 }
 // -----------------------------------------------------------
@@ -225,7 +225,7 @@ int main()
     // Error calculation
     vector <double> adams_moulton_implicit_error = calc_error (w_values_implicit, exact_soln);
     vector <double> w_values_PC_error = calc_error (w_values_PC, exact_soln);
-    
+
     print("---------------------------------");
     print("Fixed Point\tPC");
     print("---------------------------------");
