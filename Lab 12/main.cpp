@@ -15,7 +15,7 @@ double orig_sol (double x, double y)
 /* Boundary values */
 double boundary_cond (double x, double y)
 {
-    if (abs(x) < epsilon || abs(x-x_range_to) < epsilon || abs(y) < epsilon)
+    if (abs(x-x_range_from) < epsilon || abs(x-x_range_to) < epsilon || abs(y-y_range_from) < epsilon)
         return 0.0;
     else /* y == 15 */
         return 100.0 * sin(M_PI*x/10.0);
@@ -36,13 +36,6 @@ std::vector<double> calc_exact_soln ()
         }
     return exact_soln;
 }
-// std::vector<double> calc_error (vector<double> &approx_soln, vector<double> &exact_soln)
-// {
-//     vector<double> list_error;
-//     for (int i = 0; i < exact_soln.size(); i++)
-//         list_error.push_back (abs(approx_soln[i] - exact_soln[i]));
-//     return list_error;
-// }
 void init_boundary (std::vector<std::vector<double> > &grid_value)
 {
     // Calculate the mesh size
@@ -54,7 +47,7 @@ void init_boundary (std::vector<std::vector<double> > &grid_value)
     {
         int j = y_grid_size;
         double x = x_range_from + i*h;
-        double y = y_range_from + j*k;
+        double y = y_range_to - j*k;
         grid_value[j][i] = boundary_cond(x, y);
     }
     // Upper horizontal boundary
@@ -62,26 +55,26 @@ void init_boundary (std::vector<std::vector<double> > &grid_value)
     {
         int j = 0;
         double x = x_range_from + i*h;
-        double y = y_range_from + j*k;
+        double y = y_range_to - j*k;
         grid_value[j][i] = boundary_cond(x, y);
     }
-    // Lower vertical boundary
+    // Left vertical boundary
     for (int j = 0; j < y_grid_size+1; j++)
     {
         int i = 0;
         double x = x_range_from + i*h;
-        double y = y_range_from + j*k;
+        double y = y_range_to - j*k;
         grid_value[j][i] = boundary_cond(x, y);
     }
-    // Upper vertical boundary
+    // Right vertical boundary
     for (int j = 0; j < y_grid_size+1; j++)
     {
         int i = x_grid_size;
         double x = x_range_from + i*h;
-        double y = y_range_from + j*k;
+        double y = y_range_to - j*k;
         grid_value[j][i] = boundary_cond(x, y);
     }
-    
+
 }
 vector<double> e_five_pt_solver (std::vector<std::vector<double> > &grid_value)
 {
@@ -132,7 +125,7 @@ vector<double> e_five_pt_solver (std::vector<std::vector<double> > &grid_value)
     for (int j=0; j<num_y+2; j++)
     {
         for (int i=0; i<num_x+2; i++)
-            cout << grid_value[i][j] << " ";
+            cout << grid_value[j][i] << " ";
         cout << endl;
     }
     display(coef_b);
